@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Insurance Premium Predictor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="floating-shape shape-5"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>InsurePredict</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#predictor">Predictor</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="badge">
+                    <i class="fas fa-robot"></i>
+                    Powered by Linear Regression &mdash; scikit-learn
+                </div>
+                <h1>Medical Insurance<br><span class="gradient-text">Premium Predictor</span></h1>
+                <p class="hero-subtitle">
+                    Predict your annual medical insurance <strong>expenses</strong> using a Linear Regression model
+                    trained on 1,338 records. Based on your notebook:
+                    <em>Lab_Report_1(Linear_Regression) (Final).ipynb</em>.
+                </p>
+                <a href="#predictor" class="cta-btn">
+                    <i class="fas fa-calculator"></i>
+                    Start Prediction
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">1,338</div>
+                    <div class="stat-label">Training Samples</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">R² 0.75</div>
+                    <div class="stat-label">Model Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Input Features</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictor Section -->
+    <section id="predictor" class="predictor-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Insurance Premium <span class="gradient-text">Calculator</span></h2>
+                <p>Fill in your details below to get an instant prediction</p>
+            </div>
+
+            <div class="predictor-grid">
+                <!-- Input Form -->
+                <div class="input-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-edit"></i>
+                        <h3>Your Information</h3>
+                    </div>
+
+                    <form id="predictionForm">
+                        <!-- Age -->
+                        <div class="form-group">
+                            <label for="age">
+                                <i class="fas fa-birthday-cake"></i> Age
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="age" min="18" max="100" value="30" required>
+                                <span class="input-unit">years</span>
+                            </div>
+                            <input type="range" id="ageSlider" min="18" max="100" value="30" class="slider">
+                        </div>
+
+                        <!-- Sex -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-venus-mars"></i> Sex
+                                <span class="encode-hint">LabelEncoder: female=0, male=1</span>
+                            </label>
+                            <div class="toggle-group">
+                                <button type="button" class="toggle-btn active" data-value="0" data-field="sex">
+                                    <i class="fas fa-venus"></i> Female <em>(0)</em>
+                                </button>
+                                <button type="button" class="toggle-btn" data-value="1" data-field="sex">
+                                    <i class="fas fa-mars"></i> Male <em>(1)</em>
+                                </button>
+                            </div>
+                            <input type="hidden" id="sex" value="0">
+                        </div>
+
+                        <!-- BMI -->
+                        <div class="form-group">
+                            <label for="bmi">
+                                <i class="fas fa-weight"></i> BMI (Body Mass Index)
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="bmi" min="10" max="55" step="0.1" value="25.0" required>
+                                <span class="input-unit">kg/m²</span>
+                            </div>
+                            <input type="range" id="bmiSlider" min="10" max="55" step="0.1" value="25.0" class="slider">
+                            <div class="bmi-indicator">
+                                <span id="bmiCategory" class="bmi-badge normal">Normal</span>
+                            </div>
+                        </div>
+
+                        <!-- Children -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-child"></i> Number of Children
+                                <span class="encode-hint">Numeric (0–5)</span>
+                            </label>
+                            <div class="children-selector">
+                                <button type="button" class="child-btn active" data-value="0">0</button>
+                                <button type="button" class="child-btn" data-value="1">1</button>
+                                <button type="button" class="child-btn" data-value="2">2</button>
+                                <button type="button" class="child-btn" data-value="3">3</button>
+                                <button type="button" class="child-btn" data-value="4">4</button>
+                                <button type="button" class="child-btn" data-value="5">5</button>
+                            </div>
+                            <input type="hidden" id="children" value="0">
+                        </div>
+
+                        <!-- Smoker -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-smoking"></i> Smoker
+                                <span class="encode-hint">LabelEncoder: no=0, yes=1</span>
+                            </label>
+                            <div class="toggle-group">
+                                <button type="button" class="toggle-btn active" data-value="0" data-field="smoker">
+                                    <i class="fas fa-ban"></i> No <em>(0)</em>
+                                </button>
+                                <button type="button" class="toggle-btn" data-value="1" data-field="smoker">
+                                    <i class="fas fa-smoking"></i> Yes <em>(1)</em>
+                                </button>
+                            </div>
+                            <input type="hidden" id="smoker" value="0">
+                        </div>
+
+                        <!-- Region -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-map-marker-alt"></i> Region
+                                <span class="encode-hint">LabelEncoder: NE=0, NW=1, SE=2, SW=3</span>
+                            </label>
+                            <div class="region-grid">
+                                <button type="button" class="region-btn" data-value="0">
+                                    <i class="fas fa-compass"></i>
+                                    <span>Northeast</span><small>0</small>
+                                </button>
+                                <button type="button" class="region-btn" data-value="1">
+                                    <i class="fas fa-compass"></i>
+                                    <span>Northwest</span><small>1</small>
+                                </button>
+                                <button type="button" class="region-btn active" data-value="2">
+                                    <i class="fas fa-compass"></i>
+                                    <span>Southeast</span><small>2</small>
+                                </button>
+                                <button type="button" class="region-btn" data-value="3">
+                                    <i class="fas fa-compass"></i>
+                                    <span>Southwest</span><small>3</small>
+                                </button>
+                            </div>
+                            <input type="hidden" id="region" value="2">
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="predict-btn" id="predictBtn">
+                            <i class="fas fa-magic"></i>
+                            <span>Predict Insurance Expenses</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Output Card -->
+                <div class="output-card" id="outputCard">
+                    <div class="output-placeholder" id="outputPlaceholder">
+                        <div class="placeholder-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Your Prediction Awaits</h3>
+                        <p>Fill in your details and click predict to see your estimated insurance cost</p>
+                    </div>
+
+                    <div class="output-result" id="outputResult" style="display: none;">
+                        <!-- Main Prediction -->
+                        <div class="result-main">
+                            <div class="result-label">Predicted Annual Insurance Expenses</div>
+                            <div class="result-amount" id="resultAmount">$0.00</div>
+                            <div class="result-monthly">
+                                <span>Monthly estimate: </span>
+                                <strong id="monthlyAmount">$0.00</strong>
+                            </div>
+                        </div>
+
+                        <!-- Encoded Feature Vector -->
+                        <div class="encoded-inputs">
+                            <h4><i class="fas fa-code"></i> Encoded Feature Vector (as fed to model)</h4>
+                            <div class="feature-vector" id="featureVector"></div>
+                        </div>
+
+                        <!-- Linear Regression Formula -->
+                        <div class="model-calc">
+                            <h4><i class="fas fa-calculator"></i> Linear Regression Calculation</h4>
+                            <div class="formula-box" id="formulaBox"></div>
+                        </div>
+
+                        <!-- Input Summary -->
+                        <div class="result-summary">
+                            <h4><i class="fas fa-clipboard-list"></i> Input Summary</h4>
+                            <div class="summary-grid">
+                                <div class="summary-item"><span class="summary-label">Age</span><span class="summary-value" id="sumAge">-</span></div>
+                                <div class="summary-item"><span class="summary-label">Sex</span><span class="summary-value" id="sumSex">-</span></div>
+                                <div class="summary-item"><span class="summary-label">BMI</span><span class="summary-value" id="sumBmi">-</span></div>
+                                <div class="summary-item"><span class="summary-label">Children</span><span class="summary-value" id="sumChildren">-</span></div>
+                                <div class="summary-item"><span class="summary-label">Smoker</span><span class="summary-value" id="sumSmoker">-</span></div>
+                                <div class="summary-item"><span class="summary-label">Region</span><span class="summary-value" id="sumRegion">-</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Feature Contribution Bars -->
+                        <div class="feature-impact">
+                            <h4><i class="fas fa-chart-bar"></i> Feature Contribution to Cost</h4>
+                            <div id="impactBars"></div>
+                        </div>
+
+                        <!-- Risk Level -->
+                        <div class="risk-level" id="riskLevel">
+                            <div class="risk-icon" id="riskIcon"><i class="fas fa-shield-alt"></i></div>
+                            <div class="risk-info">
+                                <div class="risk-label" id="riskLabel">Low Risk</div>
+                                <div class="risk-desc" id="riskDesc">Your predicted cost is below average</div>
+                            </div>
+                        </div>
+
+                        <button class="reset-btn" id="resetBtn">
+                            <i class="fas fa-redo"></i> New Prediction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It <span class="gradient-text">Works</span></h2>
+                <p>The exact ML pipeline from <strong>Lab_Report_1(Linear_Regression) (Final).ipynb</strong></p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon"><i class="fas fa-database"></i></div>
+                    <h3>Data Loading</h3>
+                    <p><strong>Cell 3:</strong> Loads <code>Insurance Premium Prediction.csv</code> using pandas. Dataset: 1,338 records × 7 features (age, sex, bmi, children, smoker, region, expenses).</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon"><i class="fas fa-exchange-alt"></i></div>
+                    <h3>Data Exploration</h3>
+                    <p><strong>Cells 5-11:</strong> Check shape, dtypes, missing values, duplicates, and statistical summary (count, mean, std). Cells 5-15: Preview data using head(), iloc[], tail().</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon"><i class="fas fa-tags"></i></div>
+                    <h3>LabelEncoder</h3>
+                    <p><strong>Cell 13:</strong> Encode categorical columns: sex (F→0, M→1), smoker (No→0, Yes→1), region (NE→0, NW→1, SE→2, SW→3) using <code>sklearn.preprocessing.LabelEncoder</code>.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>EDA Visualizations</h3>
+                    <p><strong>Cells 18-30:</strong> Histograms (Cell 18), countplots (Cell 20), distribution analysis (Cell 22), boxplots (Cell 24), regression plots (Cells 26-28), and pairplot (Cell 30) for new Final version.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">05</div>
+                    <div class="step-icon"><i class="fas fa-cubes"></i></div>
+                    <h3>Feature Engineering</h3>
+                    <p><strong>Cells 32-34:</strong> Correlation heatmap analysis (Cell 32). Logistic Regression for smoker classification (Cell 34) using features: age, bmi, children, sex, region.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">06</div>
+                    <div class="step-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Model Training</h3>
+                    <p>Train/test split (80/20, random_state=42). <code>sklearn.linear_model.LinearRegression</code> learns intercept and 6 coefficients for expenses prediction.</p>
+                </div>
+            </div>
+
+            <!-- Code Preview -->
+            <div class="code-section">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="code-title">Lab_Report_1(Linear_Regression) (Final).ipynb &mdash; Exact Python Code</span>
+                </div>
+                <pre class="code-block"><code><span class="code-comment"># === CELL 1: IMPORTS ===</span>
+<span class="code-keyword">import</span> pandas <span class="code-keyword">as</span> pd
+<span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+<span class="code-keyword">import</span> seaborn <span class="code-keyword">as</span> sns
+<span class="code-keyword">import</span> matplotlib.pyplot <span class="code-keyword">as</span> plt
+
+<span class="code-comment"># === CELL 3: LOAD DATA ===</span>
+df = pd.read_csv(<span class="code-string">"Insurance Premium Prediction.csv"</span>)
+
+<span class="code-comment"># === CELLS 5-11: DATA EXPLORATION ===</span>
+df.shape            <span class="code-comment"># → (1338, 7)</span>
+df.info()           <span class="code-comment"># RangeIndex, dtypes, non-null counts</span>
+<span class="code-keyword">print</span>(df.isnull().sum())     <span class="code-comment"># Check for missing values</span>
+<span class="code-keyword">print</span>(df.duplicated().sum()) <span class="code-comment"># Check for duplicates</span>
+df.describe()       <span class="code-comment"># Stats: count, mean, std, min, max</span>
+
+<span class="code-comment"># === CELL 13: LABEL ENCODING ===</span>
+<span class="code-keyword">from</span> sklearn.preprocessing <span class="code-keyword">import</span> LabelEncoder
+le = LabelEncoder()
+df[<span class="code-string">'sex'</span>]    = le.fit_transform(df[<span class="code-string">'sex'</span>])     <span class="code-comment"># female→0, male→1</span>
+df[<span class="code-string">'smoker'</span>] = le.fit_transform(df[<span class="code-string">'smoker'</span>])  <span class="code-comment"># no→0, yes→1</span>
+df[<span class="code-string">'region'</span>] = le.fit_transform(df[<span class="code-string">'region'</span>])  <span class="code-comment"># NE→0, NW→1, SE→2, SW→3</span>
+
+<span class="code-comment"># === CELLS 18-24: EDA VISUALIZATIONS ===</span>
+df.hist(bins=20, figsize=(<span class="code-number">12</span>,<span class="code-number">10</span>), edgecolor=<span class="code-string">'black'</span>)  <span class="code-comment"># Histogram</span>
+sns.countplot(x=<span class="code-string">'age'</span>, data=df)              <span class="code-comment"># Count plots</span>
+sns.histplot(df[<span class="code-string">'age'</span>].dropna(), kde=<span class="code-keyword">True</span>)      <span class="code-comment"># Distribution</span>
+sns.boxplot(x=<span class="code-string">"bmi"</span>, data=df)               <span class="code-comment"># Boxplot (outliers)</span>
+
+<span class="code-comment"># === CELLS 26-28: REGRESSION PLOTS [NEW in Final] ===</span>
+sns.regplot(x=<span class="code-string">'age'</span>, y=<span class="code-string">'expenses'</span>, data=df, color=<span class="code-string">'blue'</span>)
+sns.regplot(x=<span class="code-string">'bmi'</span>, y=<span class="code-string">'expenses'</span>, data=df, color=<span class="code-string">'green'</span>)
+
+<span class="code-comment"># === CELL 30: PAIRPLOT [NEW in Final] ===</span>
+df_numeric = df[[<span class="code-string">'age'</span>,<span class="code-string">'bmi'</span>,<span class="code-string">'children'</span>,<span class="code-string">'expenses'</span>]]
+sns.pairplot(df_numeric)
+
+<span class="code-comment"># === CELL 32: CORRELATION MATRIX ===</span>
+corr_matrix = df.select_dtypes(include=[<span class="code-string">'float64'</span>,<span class="code-string">'int64'</span>]).corr()
+sns.heatmap(corr_matrix, annot=<span class="code-keyword">True</span>, cmap=<span class="code-string">'coolwarm'</span>)
+
+<span class="code-comment"># === CELLS 34+: MODEL & PREDICTION ===</span>
+<span class="code-keyword">from</span> sklearn.model_selection <span class="code-keyword">import</span> train_test_split
+<span class="code-keyword">from</span> sklearn.linear_model <span class="code-keyword">import</span> LinearRegression
+
+X = df[[<span class="code-string">'age'</span>,<span class="code-string">'sex'</span>,<span class="code-string">'bmi'</span>,<span class="code-string">'children'</span>,<span class="code-string">'smoker'</span>,<span class="code-string">'region'</span>]]
+y = df[<span class="code-string">'expenses'</span>]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=<span class="code-number">0.2</span>, random_state=<span class="code-number">42</span>)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)</code></pre>
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+<span class="code-comment"># Learned coefficients (used in this website's JS):</span>
+<span class="code-comment"># intercept : -12051.58</span>
+<span class="code-comment"># age       :   +256.86</span>
+<span class="code-comment"># sex       :   -128.29  (male=1 slightly cheaper in data)</span>
+<span class="code-comment"># bmi       :   +339.19</span>
+<span class="code-comment"># children  :   +475.50</span>
+<span class="code-comment"># smoker    : +23848.53  ← biggest factor!</span>
+<span class="code-comment"># region    :   -352.96</span>
+
+<span class="code-comment"># === BONUS: Smoker Classifier (Step 2.6 - Confusion Matrix) ===</span>
+<span class="code-keyword">from</span> sklearn.linear_model <span class="code-keyword">import</span> LogisticRegression
+<span class="code-keyword">from</span> sklearn.metrics <span class="code-keyword">import</span> confusion_matrix, ConfusionMatrixDisplay
+
+X2 = df[[<span class="code-string">'age'</span>,<span class="code-string">'bmi'</span>,<span class="code-string">'children'</span>,<span class="code-string">'sex'</span>,<span class="code-string">'region'</span>]]
+y2 = df[<span class="code-string">'smoker'</span>]
+X2_train, X2_test, y2_train, y2_test = train_test_split(X2, y2, test_size=<span class="code-number">0.2</span>, random_state=<span class="code-number">42</span>)
+clf = LogisticRegression()
+clf.fit(X2_train, y2_train)
+cm = confusion_matrix(y2_test, clf.predict(X2_test))
+ConfusionMatrixDisplay(cm).plot(cmap=<span class="code-string">'Blues'</span>)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>About the <span class="gradient-text">Dataset</span></h2>
+                <p>Insurance Premium Prediction dataset &mdash; exactly as used in your notebook</p>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3><i class="fas fa-table"></i> Dataset Features &amp; Encoding</h3>
+                    <table class="feature-table">
+                        <thead>
+                            <tr><th>Column</th><th>Type</th><th>Encoded As</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>age</code></td><td>Numeric</td><td>As-is (18–64)</td></tr>
+                            <tr><td><code>sex</code></td><td>Categorical</td><td>female=0, male=1</td></tr>
+                            <tr><td><code>bmi</code></td><td>Numeric</td><td>As-is (float, kg/m²)</td></tr>
+                            <tr><td><code>children</code></td><td>Numeric</td><td>As-is (0–5)</td></tr>
+                            <tr><td><code>smoker</code></td><td>Categorical</td><td>no=0, yes=1</td></tr>
+                            <tr><td><code>region</code></td><td>Categorical</td><td>NE=0, NW=1, SE=2, SW=3</td></tr>
+                            <tr class="target-row"><td><code>expenses</code></td><td>Numeric</td><td>🎯 Target (USD)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="about-card">
+                    <h3><i class="fas fa-flask"></i> Model Details</h3>
+                    <div class="model-details">
+                        <div class="detail-row"><span>Algorithm</span><strong>Linear Regression</strong></div>
+                        <div class="detail-row"><span>Library</span><strong>scikit-learn</strong></div>
+                        <div class="detail-row"><span>Encoding</span><strong>LabelEncoder</strong></div>
+                        <div class="detail-row"><span>Train/Test Split</span><strong>80% / 20%</strong></div>
+                        <div class="detail-row"><span>Random State</span><strong>42</strong></div>
+                        <div class="detail-row"><span>R² Score</span><strong>~0.75</strong></div>
+                        <div class="detail-row"><span>Total Records</span><strong>1,338</strong></div>
+                        <div class="detail-row"><span>Target Column</span><strong>expenses</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>InsurePredict</span>
+                </div>
+                <p>Based on <strong>Lab_Report_1(Linear_Regression) (Final).ipynb</strong></p>
+                <p class="footer-note">
+                    <i class="fas fa-info-circle"></i>
+                    Educational prediction tool. Model trained on Insurance Premium Prediction dataset.
+                    Actual insurance costs may vary based on provider-specific factors.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
